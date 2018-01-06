@@ -1,0 +1,5 @@
+.root{
+    background-image: url("./image/splash.gif");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
