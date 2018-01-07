@@ -1,5 +1,9 @@
 package console;
 
+import sun.util.calendar.BaseCalendar;
+
+import java.util.Date;
+
 import static java.lang.Thread.sleep;
 
 public class Processus extends Thread{
@@ -42,6 +46,7 @@ public class Processus extends Thread{
         this.service = service;
     }
 
+
     //  Les getters
 
 
@@ -68,8 +73,9 @@ public class Processus extends Thread{
     //  La méthode run
     @Override
     public void run() {
+        Date d = new Date();
         synchronized (this){
-            System.out.print(this.nom+" : "+Ordonnanceur.compteur+" : ");
+            System.out.print("\033[35m"+this.nom+" : "+"\033[00m"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"-> ");
             for(int i=0;i<d_cycles;i++){
                 try {
                     Thread.sleep( 1000);
@@ -79,8 +85,8 @@ public class Processus extends Thread{
                 }
                 System.out.print(". ");
             }
-            System.out.print(Ordonnanceur.compteur);
-            System.out.println();
+            d = new Date();
+            System.out.print("-> "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"\033[35m"+" \\ \\ Attente : "+"\033[00m"+this.getAttente()+"\n");
             notify();
         }
     }
@@ -93,7 +99,15 @@ public class Processus extends Thread{
         this.start();
     }
 
-    public void lancerFIFO(){
+    public void lancerFIFO() throws InterruptedException {
         this.start();
+        this.join();
+    }
+
+    //  La méthode toString()
+
+    @Override
+    public String toString() {
+        return nom+" "+arrivee+" "+d_cycles;
     }
 }
