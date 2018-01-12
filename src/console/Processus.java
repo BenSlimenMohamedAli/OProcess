@@ -6,13 +6,14 @@ import java.util.Date;
 
 import static java.lang.Thread.sleep;
 
-public class Processus extends Thread{
+public class Processus implements Runnable{
 
     private String nom;
     private int arrivee;
     private int d_cycles;
     private int attente;
     private int service;
+    private int quantum;
 
     //  Le constructeur qui initialise les valeurs
     public Processus(String nom, int arrivee, int d_cycles) {
@@ -46,7 +47,9 @@ public class Processus extends Thread{
         this.service = service;
     }
 
-
+    public void setQuantum(int quantum) {
+        this.quantum = quantum;
+    }
     //  Les getters
 
 
@@ -70,16 +73,21 @@ public class Processus extends Thread{
         return service;
     }
 
+    public int getQuantum() {
+        return quantum;
+    }
+
     //  La méthode run
     @Override
     public void run() {
         Date d = new Date();
         synchronized (this){
-            System.out.print("\033[35m"+this.nom+" : "+"\033[00m"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"-> ");
-            for(int i=0;i<d_cycles;i++){
+            System.out.print("\n\033[35m"+this.nom+" : "+"\033[00m"+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"-> ");
+            for(int i=0;i<quantum;i++){
                 try {
                     Thread.sleep( 1000);
                     Ordonnanceur.compteur++;
+                    service++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -89,19 +97,6 @@ public class Processus extends Thread{
             System.out.print("-> "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"\033[35m"+" \\ \\ Attente : "+"\033[00m"+this.getAttente()+"\n");
             notify();
         }
-    }
-
-    // La methode pour lancer le thread selon l'algorithme FIFO
-    public void lancerFIFO(Processus p) throws InterruptedException {
-        synchronized (p){
-            p.wait();
-        }
-        this.start();
-    }
-
-    public void lancerFIFO() throws InterruptedException {
-        this.start();
-        this.join();
     }
 
     //  La méthode toString()

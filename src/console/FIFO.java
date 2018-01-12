@@ -16,10 +16,13 @@ public class FIFO extends Ordonnanceur {
                 System.out.print("* ");
                 compteur++; //  L'incrémentation du compteur pour mesurer le temps
             }
+            filsDattente.get(0).setQuantum(filsDattente.get(0).getD_cycles());
             System.out.println();
             attenteTotal += filsDattente.get(0).getAttente();   // Ajouter le temps d'attente du processus
             rotationTotale += filsDattente.get(0).getAttente()+filsDattente.get(0).getD_cycles();   // Ajouter le temps de rotation du processus
-            filsDattente.get(0).lancerFIFO();   // L'ancement du processus courante
+            Thread t = new Thread(filsDattente.get(0));// L'ancement du processus courante
+            t.start();
+            t.join();
             //  incrémentation du temps d'attente des processus
             for(int i=1;i<filsDattente.size();i++){
                 if(filsDattente.get(i).getArrivee() < compteur){

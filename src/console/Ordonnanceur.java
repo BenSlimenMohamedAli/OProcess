@@ -10,6 +10,7 @@ abstract class Ordonnanceur {
     public static int attenteTotal = 0; // Le temps d'attente total
     public static int rotationTotale = 0;   //  Le temps de rotation total
     public static int nb_processus; //  Le nombre des processus
+    public static int quantum;
 
     public abstract void ordonnancement(ArrayList<Processus> flist) throws InterruptedException;    //  La méthode d'ordonnancement
 
