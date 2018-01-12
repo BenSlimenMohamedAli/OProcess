@@ -118,4 +118,19 @@ abstract class Ordonnanceur {
         return list;
     }
 
+    public void sortD_cycles(ArrayList<Processus> list){
+        Collections.sort(list, new Comparator<Processus>() {
+            @Override
+            public int compare(Processus o1, Processus o2) {
+                if (o1.getD_cycles() < o2.getD_cycles()) {
+                    return -1;
+                } else if (o1.getD_cycles() > o2.getD_cycles()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+
 }
