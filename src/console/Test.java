@@ -13,7 +13,7 @@ public class Test {
 
         Ordonnanceur.quantum = in.nextInt();
 
-        SJF r = new SJF();
+        SJFP r = new SJFP();
         try {
             r.ordonnancement(Ordonnanceur.recupérerProcs("file.txt"));
         } catch (InterruptedException e) {
