@@ -1,6 +1,6 @@
-package console;
+package console.Algorithmes;
 
-import sun.util.calendar.BaseCalendar;
+import console.Algorithmes.Ordonnanceur;
 
 import java.util.Date;
 
@@ -9,11 +9,7 @@ import static java.lang.Thread.sleep;
 public class Processus implements Runnable{
 
     private String nom;
-    private int arrivee;
-    private int d_cycles;
-    private int attente;
-    private int service;
-    private int quantum;
+    private int arrivee, d_cycles, attente, service, quantum;
 
     //  Le constructeur qui initialise les valeurs
     public Processus(String nom, int arrivee, int d_cycles) {
@@ -25,8 +21,6 @@ public class Processus implements Runnable{
     }
 
     // les setters
-
-
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -93,16 +87,10 @@ public class Processus implements Runnable{
                 }
                 System.out.print(". ");
             }
+            Ordonnanceur.ordChaine += nom+" :"+quantum+" | ";
             d = new Date();
             System.out.print("-> "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"\033[35m"+" \\ \\ Attente : "+"\033[00m"+this.getAttente()+"\n");
             notify();
         }
-    }
-
-    //  La méthode toString()
-
-    @Override
-    public String toString() {
-        return nom+" "+arrivee+" "+d_cycles;
     }
 }

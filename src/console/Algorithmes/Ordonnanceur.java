@@ -1,18 +1,15 @@
-package console;
+package console.Algorithmes;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-abstract class Ordonnanceur {
-    public static int compteur;
+public abstract class Ordonnanceur {
+    static int compteur;
+    static String ordChaine = "";
 
-    public static int attenteTotal = 0; // Le temps d'attente total
-    public static int rotationTotale = 0;   //  Le temps de rotation total
-    public static int nb_processus; //  Le nombre des processus
-    public static int quantum;
+    public static int attenteTotal = 0, quantum, nb_processus, rotationTotale = 0; // Le temps d'attente total //  Le temps de rotation total //  Le nombre des processus
 
-    public abstract void ordonnancement(ArrayList<Processus> flist) throws InterruptedException;    //  La méthode d'ordonnancement
+    public abstract void ordonnancement(ArrayList<Processus> flist) throws InterruptedException;    //  La méthode d'ordonnancement commune
 
     /*
      *  Nom :               saisieProcs
@@ -21,12 +18,12 @@ abstract class Ordonnanceur {
      */
 
     public static void saisieProcs(String Nfichier) throws IOException {
-        boolean continuer  = true;  //  Un boolean pour connaitre
+        boolean continuer  = true;              //  Un boolean pour connaitre
         Scanner in = new Scanner(System.in);    //  Un objet Scanner pour récuperer input des utilisateurs
-        int arrivee,d_cycles;   //  Des variables pour stocker la date d'arrivée et la durée des cycles
-        String nom; //  Une variable pour stocker le nom du procesus
-        File f = new File(Nfichier);    //  recupération du fichier
-        f.createNewFile();  //  Création du fichier au cas ou elle n'existe pas
+        int arrivee,d_cycles;                   //  Des variables pour stocker la date d'arrivée et la durée des cycles
+        String nom;                             //  Une variable pour stocker le nom du procesus
+        File f = new File(Nfichier);            //  recupération du fichier
+        f.createNewFile();                      //  Création du fichier au cas ou elle n'existe pas
         PrintWriter writer = new PrintWriter(f,"UTF-8");    //  définir le writer
 
         while(continuer){
@@ -102,7 +99,7 @@ abstract class Ordonnanceur {
      *
      */
 
-    public ArrayList<Processus> sortA(ArrayList<Processus> list){
+    public void sortA(ArrayList<Processus> list){
         Collections.sort(list, new Comparator<Processus>() {
             @Override
             public int compare(Processus o1, Processus o2) {
@@ -115,7 +112,6 @@ abstract class Ordonnanceur {
                 }
             }
         });
-        return list;
     }
 
     public void sortD_cycles(ArrayList<Processus> list){

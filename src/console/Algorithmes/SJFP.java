@@ -1,18 +1,17 @@
-package console;
+package console.Algorithmes;
 
 import java.util.ArrayList;
 
-public class SJFP extends Ordonnanceur{
+public class SJFP extends Ordonnanceur {
 
     @Override
-    public void ordonnancement(ArrayList<Processus> list) throws InterruptedException {
-        ArrayList<Processus> rlist = sortA(list);
+    public void ordonnancement(ArrayList<Processus> rlist) throws InterruptedException {
+        sortA(rlist);
 
         ArrayList<Processus> filsDattente = new ArrayList<>();
 
 
         while (rlist.size() > 0 || filsDattente.size() > 0) {
-
 
             if (rlist.size() > 0) {
                 while (rlist.get(0).getArrivee() <= compteur) {

@@ -1,14 +1,14 @@
-package console;
+package console.Algorithmes;
 
 import java.util.ArrayList;
 
 public class FIFO extends Ordonnanceur {
 
     @Override
-    public void ordonnancement(ArrayList<Processus> flist ) throws InterruptedException {
-        ArrayList<Processus> filsDattente = sortA(flist);   //  La liste d'attente
+    public void ordonnancement(ArrayList<Processus> filsDattente ) throws InterruptedException {
+        sortA(filsDattente);   //  La liste d'attente
 
-        while(flist.size() > 0){
+        while(filsDattente.size() > 0){
 
             //  Attendre l'arrivée d'une processus
             while(compteur < filsDattente.get(0).getArrivee()){
