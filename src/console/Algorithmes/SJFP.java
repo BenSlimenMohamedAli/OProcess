@@ -2,35 +2,35 @@ package console.Algorithmes;
 
 import java.util.ArrayList;
 
-public class SJFP extends Ordonnanceur {
+public class SJFP extends Scheduler {
 
     @Override
-    public void ordonnancement(ArrayList<Processus> rlist) throws InterruptedException {
-        sortA(rlist);
+    public void ordonnancement(ArrayList<Process> list) throws InterruptedException {
+        sortA(list);
 
-        ArrayList<Processus> filsDattente = new ArrayList<>();
+        ArrayList<Process> waiting_line = new ArrayList<>();
 
 
-        while (rlist.size() > 0 || filsDattente.size() > 0) {
+        while (list.size() > 0 || waiting_line.size() > 0) {
 
-            edit_list(rlist,filsDattente); // edit the list
+            edit_list(list,waiting_line);
 
-            sortD_cycles(filsDattente);
+            sortD_cycles(waiting_line);
 
-            waiting(filsDattente);
+            waiting(waiting_line);
 
-            if (filsDattente.size() > 0) {
-                if (filsDattente.get(0).getD_cycles() - filsDattente.get(0).getService() > quantum) {
-                    filsDattente.get(0).setQuantum(quantum);
-                    Thread t = new Thread(filsDattente.get(0));
+            if (waiting_line.size() > 0) {
+                if (waiting_line.get(0).getCycleTime() - waiting_line.get(0).getService() > quantum) {
+                    waiting_line.get(0).setQuantum(quantum);
+                    Thread t = new Thread(waiting_line.get(0));
                     t.start();
                     t.join();
                 } else {
-                    filsDattente.get(0).setQuantum(filsDattente.get(0).getD_cycles() - filsDattente.get(0).getService());
-                    Thread t = new Thread(filsDattente.get(0));
+                    waiting_line.get(0).setQuantum(waiting_line.get(0).getCycleTime() - waiting_line.get(0).getService());
+                    Thread t = new Thread(waiting_line.get(0));
                     t.start();
                     t.join();
-                    filsDattente.remove(0);
+                    waiting_line.remove(0);
                 }
             }
         }

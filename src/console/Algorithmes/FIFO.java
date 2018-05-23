@@ -2,38 +2,37 @@ package console.Algorithmes;
 
 import java.util.ArrayList;
 
-public class FIFO extends Ordonnanceur {
+public class FIFO extends Scheduler {
 
     @Override
-    public void ordonnancement(ArrayList<Processus> filsDattente ) throws InterruptedException {
-        sortA(filsDattente);   //  La liste d'attente
+    public void ordonnancement(ArrayList<Process> waiting_line ) throws InterruptedException {
+        sortA(waiting_line);
 
-        while(filsDattente.size() > 0){
+        while(waiting_line.size() > 0){
 
-            //  Attendre l'arrivée d'une processus
-            while(compteur < filsDattente.get(0).getArrivee()){
-                Thread.sleep(1000); //  attendre une seconde
+            while(timer < waiting_line.get(0).getArrival()){
+                Thread.sleep(1000);
                 System.out.print("* ");
-                compteur++; //  L'incrémentation du compteur pour mesurer le temps
+                timer++;
             }
 
-            filsDattente.get(0).setQuantum(filsDattente.get(0).getD_cycles());
+            waiting_line.get(0).setQuantum(waiting_line.get(0).getCycleTime());
             System.out.println();
-            attenteTotal += filsDattente.get(0).getAttente();   // Ajouter le temps d'attente du processus
-            rotationTotale += filsDattente.get(0).getAttente()+filsDattente.get(0).getD_cycles();   // Ajouter le temps de rotation du processus
-            Thread t = new Thread(filsDattente.get(0));// L'ancement du processus courante
+            totalWaiting += waiting_line.get(0).getWait();
+            totalRotation += waiting_line.get(0).getWait()+waiting_line.get(0).getCycleTime();
+            Thread t = new Thread(waiting_line.get(0));
             t.start();
             t.join();
-            //  incrémentation du temps d'attente des processus
-            for(int i=1;i<filsDattente.size();i++){
-                if(filsDattente.get(i).getArrivee() < compteur){
-                    filsDattente.get(i).setAttente((compteur-filsDattente.get(i).getArrivee()));
+
+            for(int i=1;i<waiting_line.size();i++){
+                if(waiting_line.get(i).getArrival() < timer){
+                    waiting_line.get(i).setWait((timer-waiting_line.get(i).getArrival()));
                 }
             }
-            filsDattente.remove(0); //  Tuer une processus
+            waiting_line.remove(0);
         }
-        System.out.println("\nLe temps d'attente moyen est : "+((double)attenteTotal/nb_processus));    //  affichage du temps d'attente moyenne
-        System.out.println("\nLe temps de rotation moyen est : "+((double)rotationTotale/nb_processus));    //  affichage du temps de rotation moyenne
+        System.out.println("\nLe temps d'attente moyen est : "+((double)totalWaiting/nbProcessus));
+        System.out.println("\nLe temps de rotation moyen est : "+((double)totalRotation/nbProcessus));
     }
 
 

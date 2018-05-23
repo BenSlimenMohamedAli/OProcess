@@ -2,33 +2,28 @@ package console.Algorithmes;
 
 import java.util.ArrayList;
 
-public class SJF extends Ordonnanceur {
+public class SJF extends Scheduler {
     @Override
-    public void ordonnancement(ArrayList<Processus> sjflist) throws InterruptedException {
-        sortA(sjflist); // Trier la liste selon le temp d'arrivée
+    public void ordonnancement(ArrayList<Process> list) throws InterruptedException {
+        sortA(list);
 
-        ArrayList<Processus> filsDattente = new ArrayList<>();
+        ArrayList<Process> waiting_line = new ArrayList<>();
 
-        while(sjflist.size() > 0 || filsDattente.size() > 0){
-            /*
-                Ajouter les processus prés pour l'execution a la fils d'attente
-             */
+        while(list.size() > 0 || waiting_line.size() > 0){
 
-            edit_list(sjflist,filsDattente); // edit the list
+            edit_list(list,waiting_line);
 
-            sortD_cycles(filsDattente);     // Trier la fils d'attente selon la durée des cycles
+            sortD_cycles(waiting_line);
 
-            waiting(filsDattente);
-            /*
-                Execution du processus
-             */
-            if(filsDattente.size() > 0){
-                filsDattente.get(0).setAttente(compteur - (filsDattente.get(0).getArrivee()));  // Modification du temps d'attente
-                filsDattente.get(0).setQuantum(filsDattente.get(0).getD_cycles());
-                Thread t = new Thread(filsDattente.get(0));
+            waiting(waiting_line);
+
+            if(waiting_line.size() > 0){
+                waiting_line.get(0).setWait(timer - (waiting_line.get(0).getArrival()));
+                waiting_line.get(0).setQuantum(waiting_line.get(0).getCycleTime());
+                Thread t = new Thread(waiting_line.get(0));
                 t.start();
                 t.join();
-                filsDattente.remove(0);
+                waiting_line.remove(0);
             }
         }
     }

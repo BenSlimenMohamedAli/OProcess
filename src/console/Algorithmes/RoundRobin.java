@@ -2,43 +2,43 @@ package console.Algorithmes;
 
 import java.util.ArrayList;
 
-public class RoundRobin extends Ordonnanceur {
+public class RoundRobin extends Scheduler {
     @Override
-    public void ordonnancement(ArrayList<Processus> rlist) throws InterruptedException {
-        sortA(rlist);
+    public void ordonnancement(ArrayList<Process> list) throws InterruptedException {
+        sortA(list);
 
-        ArrayList<Processus> filsDattente = new ArrayList<>();
-        while(rlist.size() > 0 || filsDattente.size() > 0){
+        ArrayList<Process> waiting_line = new ArrayList<>();
+        while(list.size() > 0 || waiting_line.size() > 0){
 
-            edit_list(rlist,filsDattente); // edit the list
+            edit_list(list,waiting_line);
 
-            waiting(filsDattente);
+            waiting(waiting_line);
 
-            for(int i=0;i<filsDattente.size();i++){
-                filsDattente.get(i).setAttente(compteur - (filsDattente.get(i).getArrivee() + filsDattente.get(i).getService()));
+            for(int i=0;i<waiting_line.size();i++){
+                waiting_line.get(i).setWait(timer - (waiting_line.get(i).getArrival() + waiting_line.get(i).getService()));
 
 
-                if(filsDattente.get(i).getD_cycles() - filsDattente.get(i).getService() > quantum){
-                    filsDattente.get(i).setQuantum(quantum);
-                    Thread t = new Thread(filsDattente.get(i));
+                if(waiting_line.get(i).getCycleTime() - waiting_line.get(i).getService() > quantum){
+                    waiting_line.get(i).setQuantum(quantum);
+                    Thread t = new Thread(waiting_line.get(i));
                     t.start();
                     t.join();
                 } else{
-                    filsDattente.get(i).setQuantum(filsDattente.get(i).getD_cycles() - filsDattente.get(i).getService());
-                    Thread t = new Thread(filsDattente.get(i));
+                    waiting_line.get(i).setQuantum(waiting_line.get(i).getCycleTime() - waiting_line.get(i).getService());
+                    Thread t = new Thread(waiting_line.get(i));
                     t.start();
                     t.join();
-                    attenteTotal+=filsDattente.get(i).getAttente();
-                    rotationTotale += filsDattente.get(i).getAttente()+filsDattente.get(i).getD_cycles();
-                    filsDattente.remove(i);
+                    totalWaiting+=waiting_line.get(i).getWait();
+                    totalRotation += waiting_line.get(i).getWait()+waiting_line.get(i).getCycleTime();
+                    waiting_line.remove(i);
                     i--;
                 }
 
-                edit_list(rlist,filsDattente); // edit the list
+                edit_list(list,waiting_line);
             }
         }
-        System.out.println("\nLe temps d'attente moyen est : "+((double)attenteTotal/nb_processus));    //  affichage du temps d'attente moyenne
-        System.out.println("\nLe temps de rotation moyen est : "+((double)rotationTotale/nb_processus));    //  affichage du temps de rotation moyenne
+        System.out.println("\nLe temps d'Wait moyen est : "+((double)totalWaiting/nbProcessus));
+        System.out.println("\nLe temps de rotation moyen est : "+((double)totalRotation/nbProcessus));
 
     }
 }

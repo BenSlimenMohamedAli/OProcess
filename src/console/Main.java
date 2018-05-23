@@ -1,6 +1,7 @@
 package console;
 
 import console.Algorithmes.*;
+import console.Algorithmes.Process;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,17 +20,17 @@ public class Main {
             c = in.nextInt();
             switch(c) {
                 case 1:
-                    Ordonnanceur.saisieProcs("file.txt");
+                    Scheduler.saisieProcs("file.txt");
                     break;
                 case 2:
-                    ArrayList<Processus> list = Ordonnanceur.recupérerProcs("file.txt");
+                    ArrayList<Process> list = Scheduler.recupérerProcs("file.txt");
                     
                     System.out.println("    Choisir un algorithme\n1) Tourniquet\n2) SJF\n3) SJF Préemptif\n4) FIFO\nAutres) Retourner");
                         int c1 = in.nextInt();
                         switch(c1) {
                             case 1:
                                 System.out.println("Donner un quantum");
-                                Ordonnanceur.quantum = in.nextInt();
+                                Scheduler.quantum = in.nextInt();
                                 RoundRobin rr = new RoundRobin();
                                 rr.ordonnancement(list);
                                 break;
@@ -39,7 +40,7 @@ public class Main {
                                 break;
                             case 3:
                                 System.out.println("Donner un quantum");
-                                Ordonnanceur.quantum = in.nextInt();
+                                Scheduler.quantum = in.nextInt();
                                 SJFP sjfp = new SJFP();
                                 sjfp.ordonnancement(list);
                                 break;
