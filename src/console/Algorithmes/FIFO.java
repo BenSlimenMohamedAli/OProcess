@@ -16,6 +16,7 @@ public class FIFO extends Ordonnanceur {
                 System.out.print("* ");
                 compteur++; //  L'incrémentation du compteur pour mesurer le temps
             }
+
             filsDattente.get(0).setQuantum(filsDattente.get(0).getD_cycles());
             System.out.println();
             attenteTotal += filsDattente.get(0).getAttente();   // Ajouter le temps d'attente du processus

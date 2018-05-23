@@ -13,27 +13,11 @@ public class SJFP extends Ordonnanceur {
 
         while (rlist.size() > 0 || filsDattente.size() > 0) {
 
-            if (rlist.size() > 0) {
-                while (rlist.get(0).getArrivee() <= compteur) {
-                    filsDattente.add(filsDattente.size(), rlist.get(0));
-                    rlist.remove(0);
-                    if (rlist.size() == 0)
-                        break;
-                }
-            }
+            edit_list(rlist,filsDattente); // edit the list
+
             sortD_cycles(filsDattente);
 
-            if (filsDattente.size() > 0)
-                while (compteur < filsDattente.get(0).getArrivee()) {
-                    Thread.sleep(1000); //  attendre une seconde
-                    System.out.print("* ");
-                    compteur++; //  L'incrémentation du compteur pour mesurer le temps
-                }
-            else {
-                Thread.sleep(1000);
-                System.out.print("* ");
-                compteur++;
-            }
+            waiting(filsDattente);
 
             if (filsDattente.size() > 0) {
                 if (filsDattente.get(0).getD_cycles() - filsDattente.get(0).getService() > quantum) {

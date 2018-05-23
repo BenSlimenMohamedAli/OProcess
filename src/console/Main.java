@@ -5,7 +5,6 @@ import console.Algorithmes.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import console.Algorithmes.*;
 
 public class Main {
     public Main() {
@@ -13,7 +12,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Scanner in = new Scanner(System.in);
-        boolean var2 = true;
 
         int c;
         do {
@@ -25,12 +23,9 @@ public class Main {
                     break;
                 case 2:
                     ArrayList<Processus> list = Ordonnanceur.recupérerProcs("file.txt");
-                    boolean var4 = true;
-
-                    int c1;
-                    do {
-                        System.out.println("    Choisir un algorithme\n1) Tourniquet\n2) SJF\n3) SJF Préemptif\n4) FIFO\nAutres) Retourner");
-                        c1 = in.nextInt();
+                    
+                    System.out.println("    Choisir un algorithme\n1) Tourniquet\n2) SJF\n3) SJF Préemptif\n4) FIFO\nAutres) Retourner");
+                        int c1 = in.nextInt();
                         switch(c1) {
                             case 1:
                                 System.out.println("Donner un quantum");
@@ -48,11 +43,10 @@ public class Main {
                                 SJFP sjfp = new SJFP();
                                 sjfp.ordonnancement(list);
                                 break;
-                            case 4:
+                            default :
                                 FIFO fifo = new FIFO();
                                 fifo.ordonnancement(list);
                         }
-                    } while(c1 == 1 || c1 == 2 || c1 == 3);
             }
         } while(c == 1 || c == 2);
 

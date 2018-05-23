@@ -14,28 +14,11 @@ public class SJF extends Ordonnanceur {
                 Ajouter les processus prés pour l'execution a la fils d'attente
              */
 
-            if(sjflist.size() > 0){
-                while(sjflist.get(0).getArrivee() <= compteur){
-                    filsDattente.add(filsDattente.size(),sjflist.get(0));
-                    sjflist.remove(0);
+            edit_list(sjflist,filsDattente); // edit the list
 
-                    if(sjflist.size() == 0)
-                        break;
-                }
-            }
             sortD_cycles(filsDattente);     // Trier la fils d'attente selon la durée des cycles
-            /*  Attendre l'arrivée de la prochaine processus */
-            if(filsDattente.size() > 0)
-                while(compteur < filsDattente.get(0).getArrivee()){
-                    Thread.sleep(1000);       //  attendre une seconde
-                    System.out.print("* ");
-                    compteur++;                     //  L'incrémentation du compteur pour mesurer le temps
-                }
-            else{
-                Thread.sleep(1000);       //  attendre une seconde
-                System.out.print("* ");
-                compteur++;
-            }
+
+            waiting(filsDattente);
             /*
                 Execution du processus
              */

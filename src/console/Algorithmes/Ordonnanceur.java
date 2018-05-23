@@ -7,7 +7,8 @@ public abstract class Ordonnanceur {
     static int compteur;
     static String ordChaine = "";
 
-    public static int attenteTotal = 0, quantum, nb_processus, rotationTotale = 0; // Le temps d'attente total //  Le temps de rotation total //  Le nombre des processus
+    public static int quantum;
+    static int attenteTotal = 0, nb_processus, rotationTotale = 0; // Le temps d'attente total //  Le temps de rotation total //  Le nombre des processus
 
     public abstract void ordonnancement(ArrayList<Processus> flist) throws InterruptedException;    //  La méthode d'ordonnancement commune
 
@@ -18,13 +19,13 @@ public abstract class Ordonnanceur {
      */
 
     public static void saisieProcs(String Nfichier) throws IOException {
-        boolean continuer  = true;              //  Un boolean pour connaitre
-        Scanner in = new Scanner(System.in);    //  Un objet Scanner pour récuperer input des utilisateurs
-        int arrivee,d_cycles;                   //  Des variables pour stocker la date d'arrivée et la durée des cycles
-        String nom;                             //  Une variable pour stocker le nom du procesus
-        File f = new File(Nfichier);            //  recupération du fichier
-        f.createNewFile();                      //  Création du fichier au cas ou elle n'existe pas
-        PrintWriter writer = new PrintWriter(f,"UTF-8");    //  définir le writer
+        boolean continuer  = true;              //  continue or not
+        Scanner in = new Scanner(System.in);    //  user choise
+        int arrivee,d_cycles;                   //  Comming date
+        String nom;                             //  Process name
+        File f = new File(Nfichier);            //  getting the file
+        f.createNewFile();                      //  Creating a file if it is not exist
+        PrintWriter writer = new PrintWriter(f,"UTF-8");    // writer to write into file
 
         while(continuer){
             try{
@@ -37,6 +38,7 @@ public abstract class Ordonnanceur {
                 in.nextLine();
             }
         }
+
         in.nextLine();
         for(int i=0;i<nb_processus;i++){
             System.out.println("\033[33m"+"\nLa processus "+(i+1)+"\033[00m");
@@ -52,10 +54,7 @@ public abstract class Ordonnanceur {
                 d_cycles = in.nextInt();
                 writer.write("\n"+nom+","+arrivee+","+d_cycles);
                 in.nextLine();
-            }catch(InputMismatchException e){
-                System.out.println("\n"+"\033[31m"+"Vérifier votre saisie !!"+"\033[00m");
-                i--;
-            } catch (Exception e) {
+            }catch(Exception e){
                 System.out.println("\n"+"\033[31m"+"Vérifier votre saisie !!"+"\033[00m");
                 i--;
             }
@@ -114,6 +113,12 @@ public abstract class Ordonnanceur {
         });
     }
 
+    /*
+     *  Nom :               sortD_cycles
+     *  Fonctionnement :    tri selon le les durées des cycles
+     *
+     */
+
     public void sortD_cycles(ArrayList<Processus> list){
         Collections.sort(list, new Comparator<Processus>() {
             @Override
@@ -127,6 +132,45 @@ public abstract class Ordonnanceur {
                 }
             }
         });
+    }
+
+    /*
+     *  Nom :               edit_list
+     *  Fonctionnement :    editer les listes des processus
+     *
+     */
+
+    public void edit_list(ArrayList<Processus> list , ArrayList<Processus> fils){
+
+        if(list.size() > 0){
+            while(list.get(0).getArrivee() <= compteur){
+                fils.add(fils.size(),list.get(0));
+                list.remove(0);
+                if(list.size() == 0)
+                    break;
+            }
+        }
+    }
+
+    /*
+     *  Nom :               edit_list
+     *  Fonctionnement :    editer les listes des processus
+     *
+     */
+
+    public void waiting(ArrayList<Processus> fils) throws InterruptedException{
+        /*  Attendre l'arrivée de la prochaine processus */
+        if(fils.size() > 0)
+            while(compteur < fils.get(0).getArrivee()){
+                Thread.sleep(1000);       //  attendre une seconde
+                System.out.print("* ");
+                compteur++;                     //  L'incrémentation du compteur pour mesurer le temps
+            }
+        else{
+            Thread.sleep(1000);       //  attendre une seconde
+            System.out.print("* ");
+            compteur++;
+        }
     }
 
 }

@@ -10,27 +10,9 @@ public class RoundRobin extends Ordonnanceur {
         ArrayList<Processus> filsDattente = new ArrayList<>();
         while(rlist.size() > 0 || filsDattente.size() > 0){
 
-            if(rlist.size() > 0){
-                while(rlist.get(0).getArrivee() <= compteur){
-                    filsDattente.add(filsDattente.size(),rlist.get(0));
-                    rlist.remove(0);
+            edit_list(rlist,filsDattente); // edit the list
 
-                    if(rlist.size() == 0)
-                        break;
-                }
-            }
-
-            if(filsDattente.size() > 0)
-                while(compteur < filsDattente.get(0).getArrivee()){
-                    Thread.sleep(1000); //  attendre une seconde
-                    System.out.print("* ");
-                    compteur++; //  L'incrémentation du compteur pour mesurer le temps
-                }
-            else{
-                    Thread.sleep(1000);
-                    System.out.print("* ");
-                    compteur++;
-            }
+            waiting(filsDattente);
 
             for(int i=0;i<filsDattente.size();i++){
                 filsDattente.get(i).setAttente(compteur - (filsDattente.get(i).getArrivee() + filsDattente.get(i).getService()));
@@ -52,14 +34,7 @@ public class RoundRobin extends Ordonnanceur {
                     i--;
                 }
 
-                if(rlist.size() > 0){
-                    while(rlist.get(0).getArrivee() <= compteur){
-                        filsDattente.add(filsDattente.size(),rlist.get(0));
-                        rlist.remove(0);
-                        if(rlist.size() == 0)
-                            break;
-                    }
-                }
+                edit_list(rlist,filsDattente); // edit the list
             }
         }
         System.out.println("\nLe temps d'attente moyen est : "+((double)attenteTotal/nb_processus));    //  affichage du temps d'attente moyenne

@@ -1,10 +1,7 @@
 package console.Algorithmes;
 
-import console.Algorithmes.Ordonnanceur;
 
 import java.util.Date;
-
-import static java.lang.Thread.sleep;
 
 public class Processus implements Runnable{
 
