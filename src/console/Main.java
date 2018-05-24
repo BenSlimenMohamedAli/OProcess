@@ -1,15 +1,13 @@
 package console;
 
-import console.Algorithmes.*;
-import console.Algorithmes.Process;
+import console.Algorithms.*;
+import console.Algorithms.Process;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public Main() {
-    }
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Scanner in = new Scanner(System.in);
@@ -32,21 +30,21 @@ public class Main {
                                 System.out.println("Donner un quantum");
                                 Scheduler.quantum = in.nextInt();
                                 RoundRobin rr = new RoundRobin();
-                                rr.ordonnancement(list);
+                                rr.schedule(list);
                                 break;
                             case 2:
                                 SJF sjf = new SJF();
-                                sjf.ordonnancement(list);
+                                sjf.schedule(list);
                                 break;
                             case 3:
                                 System.out.println("Donner un quantum");
                                 Scheduler.quantum = in.nextInt();
                                 SJFP sjfp = new SJFP();
-                                sjfp.ordonnancement(list);
+                                sjfp.schedule(list);
                                 break;
                             default :
                                 FIFO fifo = new FIFO();
-                                fifo.ordonnancement(list);
+                                fifo.schedule(list);
                         }
             }
         } while(c == 1 || c == 2);

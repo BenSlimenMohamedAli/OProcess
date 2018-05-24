@@ -1,11 +1,11 @@
-package console.Algorithmes;
+package console.Algorithms;
 
 import java.util.ArrayList;
 
 public class FIFO extends Scheduler {
 
     @Override
-    public void ordonnancement(ArrayList<Process> waiting_line ) throws InterruptedException {
+    public void schedule(ArrayList<Process> waiting_line ) throws InterruptedException {
         sortA(waiting_line);
 
         while(waiting_line.size() > 0){
@@ -34,8 +34,4 @@ public class FIFO extends Scheduler {
         System.out.println("\nLe temps d'attente moyen est : "+((double)totalWaiting/nbProcessus));
         System.out.println("\nLe temps de rotation moyen est : "+((double)totalRotation/nbProcessus));
     }
-
-
-
-
 }

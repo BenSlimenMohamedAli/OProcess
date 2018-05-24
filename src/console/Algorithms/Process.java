@@ -1,4 +1,4 @@
-package console.Algorithmes;
+package console.Algorithms;
 
 
 import java.util.Date;
@@ -8,7 +8,7 @@ public class Process implements Runnable{
     private String name;
     private int arrival, cycleTime, wait, service, quantum;
 
-    public Process(String name, int arrival, int cycleTime) {
+    Process(String name, int arrival, int cycleTime) {
         this.name = name;
         this.arrival = arrival;
         this.cycleTime = cycleTime;
@@ -28,7 +28,7 @@ public class Process implements Runnable{
         this.cycleTime = cycleTime;
     }
 
-    public void setWait(int wait) {
+    void setWait(int wait) {
         this.wait = wait;
     }
 
@@ -36,7 +36,7 @@ public class Process implements Runnable{
         this.service = service;
     }
 
-    public void setQuantum(int quantum) {
+    void setQuantum(int quantum) {
         this.quantum = quantum;
     }
 
@@ -45,19 +45,19 @@ public class Process implements Runnable{
         return name;
     }
 
-    public int getArrival() {
+    int getArrival() {
         return arrival;
     }
 
-    public int getCycleTime() {
+    int getCycleTime() {
         return cycleTime;
     }
 
-    public int getWait() {
+    int getWait() {
         return wait;
     }
 
-    public int getService() {
+    int getService() {
         return service;
     }
 
@@ -80,7 +80,7 @@ public class Process implements Runnable{
                 }
                 System.out.print(". ");
             }
-            Scheduler.ordChaine += name+" :"+quantum+" | ";
+            Scheduler.schedString += name+" :"+quantum+" | ";
             d = new Date();
             System.out.print("-> "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds()+"\033[35m"+" \\ \\ wait : "+"\033[00m"+this.getWait()+"\n");
             notify();

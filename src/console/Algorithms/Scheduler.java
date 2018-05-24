@@ -1,16 +1,16 @@
-package console.Algorithmes;
+package console.Algorithms;
 
 import java.io.*;
 import java.util.*;
 
 public abstract class Scheduler {
     static int timer;
-    static String ordChaine = "";
+    static String schedString = "";
 
     public static int quantum;
     static int totalWaiting = 0, nbProcessus, totalRotation = 0;
 
-    public abstract void ordonnancement(ArrayList<Process> flist) throws InterruptedException;
+    public abstract void schedule(ArrayList<Process> flist) throws InterruptedException;
 
 
     public static void saisieProcs(String Nfichier) throws IOException {
@@ -82,7 +82,7 @@ public abstract class Scheduler {
     }
 
 
-    public void sortA(ArrayList<Process> list){
+    void sortA(ArrayList<Process> list){
         Collections.sort(list, new Comparator<Process>() {
             @Override
             public int compare(Process o1, Process o2) {
@@ -97,7 +97,7 @@ public abstract class Scheduler {
         });
     }
 
-    public void sortD_cycles(ArrayList<Process> list){
+    void sortD_cycles(ArrayList<Process> list){
         Collections.sort(list, new Comparator<Process>() {
             @Override
             public int compare(Process o1, Process o2) {
@@ -113,7 +113,7 @@ public abstract class Scheduler {
     }
 
 
-    public void edit_list(ArrayList<Process> list , ArrayList<Process> fils){
+    void edit_list(ArrayList<Process> list , ArrayList<Process> fils){
 
         if(list.size() > 0){
             while(list.get(0).getArrival() <= timer){
@@ -126,7 +126,7 @@ public abstract class Scheduler {
     }
 
 
-    public void waiting(ArrayList<Process> fils) throws InterruptedException{
+    void waiting(ArrayList<Process> fils) throws InterruptedException{
         if(fils.size() > 0)
             while(timer < fils.get(0).getArrival()){
                 Thread.sleep(1000);
