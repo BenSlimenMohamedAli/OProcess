@@ -48,5 +48,7 @@ public class RoundRobin extends Scheduler {
         System.out.println("\nAVG waiting time : "+((double)totalWaiting/nbProcesses)); // print the AVG waiting time
         System.out.println("\nAVG service time : "+((double)totalRotation/nbProcesses)); // print the AVG service time
 
+        System.out.println(schedulerString);
+
     }
 }
