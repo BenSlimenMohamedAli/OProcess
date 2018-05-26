@@ -20,6 +20,7 @@ public class FIFO extends Scheduler {
 
             /*
                 Purpose : wait until a process comes
+
             */
             while(timer < waiting_line.get(0).getArrival()){
                 Thread.sleep(1000); // sleep the thread for one second
