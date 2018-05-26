@@ -2,11 +2,16 @@ package console.Algorithms;
 
 import java.util.ArrayList;
 
+/*
+    Description :   Shortest job first is a scheduling algorithm in
+                    which the process with the smallest execution time is selected for execution next.
+ */
+
 public class SJFP extends Scheduler {
 
     @Override
     public void schedule(ArrayList<Process> list) throws InterruptedException {
-        sortA(list);
+        sortArrival(list);
 
         ArrayList<Process> waiting_line = new ArrayList<>();
 
@@ -15,7 +20,7 @@ public class SJFP extends Scheduler {
 
             edit_list(list,waiting_line);
 
-            sortD_cycles(waiting_line);
+            sortCycleTime(waiting_line);
 
             waiting(waiting_line);
 
@@ -38,6 +43,9 @@ public class SJFP extends Scheduler {
                 }
             }
         }
+
+        System.out.println("\nAVG waiting time : "+((double)totalWaiting/nbProcesses)); // print the AVG waiting time
+        System.out.println("\nAVG service time : "+((double)totalRotation/nbProcesses)); // print the AVG service time
     }
 
 }

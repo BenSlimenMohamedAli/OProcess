@@ -2,10 +2,15 @@ package console.Algorithms;
 
 import java.util.ArrayList;
 
+/*
+    Description :   Shortest job first is a scheduling algorithm in
+                    which the process with the smallest execution time is selected for execution next.
+ */
+
 public class RoundRobin extends Scheduler {
     @Override
     public void schedule(ArrayList<Process> list) throws InterruptedException {
-        sortA(list);
+        sortArrival(list);
 
         ArrayList<Process> waiting_line = new ArrayList<>();
         while(list.size() > 0 || waiting_line.size() > 0){
@@ -39,8 +44,9 @@ public class RoundRobin extends Scheduler {
                 edit_list(list,waiting_line);
             }
         }
-        System.out.println("\nLe temps d'Wait moyen est : "+((double)totalWaiting/nbProcessus));
-        System.out.println("\nLe temps de rotation moyen est : "+((double)totalRotation/nbProcessus));
+
+        System.out.println("\nAVG waiting time : "+((double)totalWaiting/nbProcesses)); // print the AVG waiting time
+        System.out.println("\nAVG service time : "+((double)totalRotation/nbProcesses)); // print the AVG service time
 
     }
 }

@@ -3,54 +3,71 @@ package console.Algorithms;
 import java.io.*;
 import java.util.*;
 
+/*
+    Description :   Shortest job first is a scheduling algorithm in
+                    which the process with the smallest execution time is selected for execution next.
+ */
+
 public abstract class Scheduler {
-    static int timer;
-    static String schedString = "";
+    static int timer; // execution timer
+    static String schedulerString = ""; // Processes final sched
 
-    public static int quantum;
-    static int totalWaiting = 0, nbProcessus, totalRotation = 0;
+    public static int quantum; // The general quantum for SJF and RR
+    static int totalWaiting = 0; // total waiting time
+    static int totalRotation = 0; // total rotation time
+    static int nbProcesses ; // total number of processes
 
-    public abstract void schedule(ArrayList<Process> flist) throws InterruptedException;
+    /*
+        name : schedule
+        type : abstract
+        purpose : schedule processes
+     */
+    public abstract void schedule(ArrayList<Process> processes_list) throws InterruptedException;
 
+    /*
+        name : inputProcesses
+        type : public
+        purpose : print processes list to the file
+     */
 
-    public static void saisieProcs(String Nfichier) throws IOException {
-        boolean continuer  = true;
+    public static void inputProcesses(String file_name) throws IOException {
+        boolean notYet  = true;
         Scanner in = new Scanner(System.in);
-        int arrival,d_cycles;
+        int arrival,cycleTime ;
         String name;
-        File f = new File(Nfichier);
+        File f = new File(file_name);
         f.createNewFile();
         PrintWriter writer = new PrintWriter(f,"UTF-8");
 
-        while(continuer){
+        while(notYet ){
             try{
-                System.out.println("\033[32m"+"Donner le namebre des process"+"\033[00m");
-                nbProcessus = in.nextInt();
-                writer.write(nbProcessus+"");
-                continuer = false;
+                System.out.println("Give process number");
+                nbProcesses = in.nextInt();
+                writer.write(nbProcesses+"");
+                notYet  = false;
             }catch(InputMismatchException e){
-                System.out.println("\n"+"\033[31m"+"Vérifier votre saisie !!"+"\033[00m");
+                System.out.println("\nVerify your input !!");
                 in.nextLine();
             }
         }
 
         in.nextLine();
-        for(int i=0;i<nbProcessus;i++){
-            System.out.println("\033[33m"+"\nLa process "+(i+1)+"\033[00m");
+        for(int i=0;i<nbProcesses;i++){
+            System.out.println("\nprocess "+(i+1));
 
             try{
-                System.out.print("\033[35m"+"name : "+"\033[00m");
+                System.out.print("name : ");
                 name = in.nextLine();
                 if(name.contains(","))
                     throw new Exception();
-                System.out.print("\033[35m"+"Arrivée : "+"\033[00m");
+                System.out.print("Arrival : ");
                 arrival = in.nextInt();
-                System.out.print("\033[35m"+"durée des cycles : "+"\033[00m");
-                d_cycles = in.nextInt();
-                writer.write("\n"+name+","+arrival+","+d_cycles);
+                System.out.print("Cycles time : ");
+                cycleTime = in.nextInt();
+                writer.write("\n"+name+","+arrival+","+cycleTime );
                 in.nextLine();
             }catch(Exception e){
-                System.out.println("\n"+"\033[31m"+"Vérifier votre saisie !!"+"\033[00m");
+                System.out.println("\nVerify your input !!");
                 i--;
             }
         }
@@ -58,7 +75,13 @@ public abstract class Scheduler {
         writer.close();
     }
 
-    public static ArrayList<Process> recupérerProcs(String FName) throws IOException {
+    /*
+        name : getFromFile
+        type : public
+        purpose : get processes list from the file
+     */
+
+    public static ArrayList<Process> getFromFile(String FName) throws IOException {
         ArrayList<Process> listP = new ArrayList<>();
 
         File f = new File(FName);
@@ -66,12 +89,12 @@ public abstract class Scheduler {
         BufferedReader br = new BufferedReader(reader);
 
         if(f.length() > 0){
-            nbProcessus = Integer.parseInt(br.readLine());
+            nbProcesses = Integer.parseInt(br.readLine());
             String s;
             while((s = br.readLine()) != null){
                 if((s.equals("") || s.substring(0,2).equals("//")))
                     continue;
-                String[] tab = new String[3];
+                String[] tab ;
                 tab = s.split(",");
                 listP.add(new Process(tab[0],Integer.parseInt(tab[1]),Integer.parseInt(tab[2])));
             }
@@ -81,8 +104,12 @@ public abstract class Scheduler {
         return listP;
     }
 
-
-    void sortA(ArrayList<Process> list){
+    /*
+        name : sortArrival
+        type : package private
+        purpose : sort processes list using arrival
+     */
+    void sortArrival(ArrayList<Process> list){
         Collections.sort(list, new Comparator<Process>() {
             @Override
             public int compare(Process o1, Process o2) {
@@ -97,7 +124,12 @@ public abstract class Scheduler {
         });
     }
 
-    void sortD_cycles(ArrayList<Process> list){
+    /*
+        name : sortCycleTime
+        type : package private
+        purpose : sort processes list using cycles time
+     */
+    void sortCycleTime(ArrayList<Process> list){
         Collections.sort(list, new Comparator<Process>() {
             @Override
             public int compare(Process o1, Process o2) {
@@ -112,12 +144,16 @@ public abstract class Scheduler {
         });
     }
 
-
-    void edit_list(ArrayList<Process> list , ArrayList<Process> fils){
+    /*
+        name : edit_list
+        type : package private
+        purpose : add the coming process to the waiting time
+     */
+    void edit_list(ArrayList<Process> list , ArrayList<Process> waiting_line){
 
         if(list.size() > 0){
             while(list.get(0).getArrival() <= timer){
-                fils.add(fils.size(),list.get(0));
+                waiting_line.add(waiting_line.size(),list.get(0));
                 list.remove(0);
                 if(list.size() == 0)
                     break;
@@ -125,10 +161,15 @@ public abstract class Scheduler {
         }
     }
 
+    /*
+        name : waiting
+        type : package private
+        purpose : wait until the next process comes
+     */
 
-    void waiting(ArrayList<Process> fils) throws InterruptedException{
-        if(fils.size() > 0)
-            while(timer < fils.get(0).getArrival()){
+    void waiting(ArrayList<Process> waiting_line) throws InterruptedException{
+        if(waiting_line.size() > 0)
+            while(timer < waiting_line.get(0).getArrival()){
                 Thread.sleep(1000);
                 System.out.print("* ");
                 timer++;

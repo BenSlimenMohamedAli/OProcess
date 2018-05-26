@@ -7,10 +7,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+    Description :   Shortest job first is a scheduling algorithm in
+                    which the process with the smallest execution time is selected for execution next.
+ */
+
 public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in); // Read the user input
 
         int c;
         do {
@@ -18,10 +23,10 @@ public class Main {
             c = in.nextInt();
             switch(c) {
                 case 1:
-                    Scheduler.saisieProcs("file.txt");
+                    Scheduler.inputProcesses("file.txt");
                     break;
                 case 2:
-                    ArrayList<Process> list = Scheduler.recupérerProcs("file.txt");
+                    ArrayList<Process> list = Scheduler.getFromFile("file.txt");
                     
                     System.out.println("    Choisir un algorithme\n1) Tourniquet\n2) SJF\n3) SJF Préemptif\n4) FIFO\nAutres) Retourner");
                         int c1 = in.nextInt();
