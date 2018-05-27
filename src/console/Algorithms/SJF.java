@@ -46,5 +46,8 @@ public class SJF extends Scheduler {
         System.out.println("\nAVG service time : "+((double)totalRotation/nbProcesses)); // print the AVG service time
 
         System.out.println(schedulerString);
+
+        timer = 0; // reinitialize the timer for next using
+        schedulerString = ""; // reinitialize the string for next using
     }
 }
